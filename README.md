@@ -35,20 +35,20 @@ This container:
 renv::install('ggplot2')
 ```
 3. Download the container:
-```
+```bash
 # ...
 ```
 4. Run the following in your terminal (it starts installing stuff; this takes 1-2 minutes on my computer):
-```
+```bash
 $ ./container.sif R --quiet -e 'library(ggplot2)'
 ```
 5. Run the above again (now it will only take a second).
 6. Run some R script which depends on that environment:
-```
+```bash
 $ ./container.sif Rscript somescript.R
 ```
 7. Or if you want the R interactive shell:
-```
+```bash
 $ ./container.sif R
 ```
 
