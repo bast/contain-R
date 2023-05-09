@@ -36,20 +36,20 @@ renv::install('ggplot2')
 ```
 3. Download the container:
 ```bash
-# ...
+$ singularity pull https://github.com/bast/contain-R/releases/download/0.1.0/contain-R.sif
 ```
 4. Run the following in your terminal (it starts installing stuff; this takes 1-2 minutes on my computer):
 ```bash
-$ ./container.sif R --quiet -e 'library(ggplot2)'
+$ ./contain-R.sif R --quiet -e 'library(ggplot2)'
 ```
 5. Run the above again (now it will only take a second).
 6. Run some R script which depends on that environment:
 ```bash
-$ ./container.sif Rscript somescript.R
+$ ./contain-R.sif Rscript somescript.R
 ```
 7. Or if you want the R interactive shell:
 ```bash
-$ ./container.sif R
+$ ./contain-R.sif R
 ```
 
 
@@ -62,7 +62,7 @@ situation:
 cd /cluster/work/users/myself/experiment
 
 # download the container
-# ...
+$ singularity pull https://github.com/bast/contain-R/releases/download/0.1.0/contain-R.sif
 
 # you decide where these should go
 export RENV_CACHE=/cluster/work/users/myself/renv-cache
@@ -72,7 +72,7 @@ export PAK_CACHE=/cluster/work/users/myself/pak-cache
 export SINGULARITY_BIND="/cluster"
 export APPTAINER_BIND="/cluster"
 
-./container.sif R --quiet -e 'library(ggplot2)'
+./contain-R.sif R --quiet -e 'library(ggplot2)'
 ```
 
 
@@ -227,3 +227,4 @@ I have used these resources when writing/testing:
 - https://sites.google.com/nyu.edu/nyu-hpc/hpc-systems/greene/software/r-packages-with-renv
 - https://raps-with-r.dev/repro_intro.html
 - https://www.youtube.com/watch?v=N7z1K4FhVFE (stream recording on how to use renv)
+- https://github.com/singularityhub/singularity-deploy
