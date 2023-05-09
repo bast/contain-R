@@ -1,0 +1,107 @@
+Bootstrap: docker
+From: rstudio/r-base:focal
+
+%post
+    R_VERSION=4.3.0
+    OS_IDENTIFIER=ubuntu-2004
+
+    wget https://cdn.posit.co/r/${OS_IDENTIFIER}/pkgs/r-${R_VERSION}_1_amd64.deb && \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -f -y ./r-${R_VERSION}_1_amd64.deb && \
+    ln -s /opt/R/${R_VERSION}/bin/R /usr/bin/R && \
+    ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/bin/Rscript && \
+    ln -s /opt/R/${R_VERSION}/lib/R /usr/lib/R && \
+    rm r-${R_VERSION}_1_amd64.deb && \
+    rm -rf /var/lib/apt/lists/*
+
+    # install renv and pak
+    echo "options(repos = c(CRAN = 'http://cran.us.r-project.org'))" > .Rprofile
+    R --quiet -e 'install.packages("renv")'
+    R --quiet -e 'install.packages("pak")'
+
+%labels
+    Author radovan.bast@uit.no
+
+%environment
+    export LC_ALL=C
+
+%runscript
+    # we need either install.R or renv.lock present
+    if [ ! -e install.R ] && [ ! -e renv.lock ]; then
+        echo "ERROR: this container needs either an install.R file or renv.lock file in the same directory"
+        exit 1
+    fi
+
+    # renv.lock file does not exist
+    use_install_R_file=false
+    if [ ! -e renv.lock ]; then
+        use_install_R_file=true
+    fi
+
+    # install.R file does not exist
+    use_lock_file=false
+    if [ ! -e install.R ]; then
+        if [ -e renv/last-updated ]; then
+            if [ renv.lock -nt renv/last-updated ]; then
+                use_lock_file=true
+            fi
+        else
+            use_lock_file=true
+        fi
+    fi
+
+    # both exist
+    if [ -e install.R ] && [ -e renv.lock ]; then
+        if [ -e renv/last-updated ]; then
+            if [ install.R -nt renv/last-updated ]; then
+                use_install_R_file=true
+            else
+                if [ renv.lock -nt renv/last-updated ]; then
+                    use_lock_file=true
+                fi
+            fi
+        else
+            if [ install.R -nt renv.lock ]; then
+                use_install_R_file=true
+            else
+                use_lock_file=true
+            fi
+        fi
+    fi
+
+    # can be configured by setting RENV_CACHE
+    export RENV_PATHS_ROOT=${RENV_CACHE:-"renv-cache"}
+
+    export RENV_CONFIG_PAK_ENABLED="TRUE"
+    # can be configured by setting PAK_CACHE
+    export PKG_PACKAGE_CACHE_DIR=${PAK_CACHE:-"pak-cache"}
+#   export PKG_CACHE_DIR="pkg-cache-dir"
+#   export PKG_METADATA_CACHE_DIR="pkg-metadata-cache-dir"
+
+    if [ ! -e renv/activate.R ]; then
+        R --quiet -e 'renv::init()'
+    fi
+
+    if "$use_install_R_file"; then
+        echo "DEBUG installing from install.R"
+        Rscript install.R
+        R --quiet -e 'renv::snapshot(type = "all")'
+        touch renv/last-updated
+    else
+        if "$use_lock_file"; then
+            echo "DEBUG installing from renv.lock"
+            R --quiet -e 'renv::restore()'
+            touch renv/last-updated
+        fi
+    fi
+
+    $@
+
+%help
+    Requires either an install.R file or a renv.lock file in the same directory.
+    Example install.R file:
+
+    renv::install('ggplot2')
+    renv::install('vcfR')
+    renv::install('hierfstat')
+    renv::install('poppr')
