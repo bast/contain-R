@@ -17,12 +17,13 @@ For reproducibility it is important to:
 - document dependencies
 - isolate dependencies from dependencies of other projects
 
-This container creates a per-project
-[renv](https://rstudio.github.io/renv/)-environment and isolates dependencies.
-
-To speed up package installation it uses [pak](https://pak.r-lib.org/) under
-the hood.  At the same time, it allows to configure a user- or group-wide cache
-which can be reused across projects.
+This container:
+- creates a per-project [renv](https://rstudio.github.io/renv/)-environment and
+  isolates dependencies
+- uses [pak](https://pak.r-lib.org/) under
+  the hood to speed up installation
+- allows to configure a user- or group-wide cache which can be reused across projects
+- does not allow accidental "I will just quickly install it into my system and document it later" since it is a container
 
 
 ## Quick start
