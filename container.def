@@ -75,6 +75,8 @@ From: rstudio/r-base:focal
     export RENV_CONFIG_PAK_ENABLED="TRUE"
     # can be configured by setting PAK_CACHE
     export PKG_PACKAGE_CACHE_DIR=${PAK_CACHE:-"pak-cache"}
+
+    # not sure whether we should do anything with these two
 #   export PKG_CACHE_DIR="pkg-cache-dir"
 #   export PKG_METADATA_CACHE_DIR="pkg-metadata-cache-dir"
 
