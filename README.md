@@ -24,6 +24,7 @@ This container:
   the hood to speed up installation
 - allows to configure a user- or group-wide cache which can be reused across projects
 - does not allow accidental "I will just quickly install it into my system and document it later" since it is a container
+- forces you to document your dependencies which is good for reproducibility and your future self
 
 
 ## Quick start on your computer
@@ -37,7 +38,7 @@ renv::install('ggplot2')
 ```
 # ...
 ```
-4. Run the following in your terminal (this will take 1-2 minutes):
+4. Run the following in your terminal (it starts installing stuff; this takes 1-2 minutes on my computer):
 ```
 $ ./container.sif R --quiet -e 'library(ggplot2)'
 ```
@@ -46,13 +47,31 @@ $ ./container.sif R --quiet -e 'library(ggplot2)'
 ```
 $ ./container.sif Rscript somescript.R
 ```
+7. Or if you want the R interactive shell:
+```
+$ ./container.sif R
+```
 
 
 ## Quick start on a cluster
 
-Same as above but instead of step 4) use (adapt paths to your situation):
-```
+Same as above but instead of steps 3 and 4, use the following and adapt paths to your
+situation:
+```bash
+# probably you do not want to be in your home folder to not fill your disk quota
+cd /cluster/work/users/myself
+
+# download the container
 # ...
+
+export RENV_CACHE=/cluster/work/users/myself/renv-cache
+export PAK_CACHE=/cluster/work/users/myself/pak-cache
+
+# you need only one of the two
+export SINGULARITY_BIND="/cluster"
+export APPTAINER_BIND="/cluster"
+
+./container.sif R --quiet -e 'library(ggplot2)'
 ```
 
 
