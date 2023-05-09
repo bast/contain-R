@@ -59,11 +59,12 @@ Same as above but instead of steps 3 and 4, use the following and adapt paths to
 situation:
 ```bash
 # probably you do not want to be in your home folder to not fill your disk quota
-cd /cluster/work/users/myself
+cd /cluster/work/users/myself/experiment
 
 # download the container
 # ...
 
+# you decide where these should go
 export RENV_CACHE=/cluster/work/users/myself/renv-cache
 export PAK_CACHE=/cluster/work/users/myself/pak-cache
 
