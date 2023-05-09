@@ -8,7 +8,7 @@ Apptainer/Singularity container for reproducible R environments.
 - [Apptainer](https://apptainer.org/) or [Singularity CE](https://docs.sylabs.io/guides/latest/user-guide/introduction.html)
 - `install.R` or `renv.lock` file (examples below) that define the environment
 - An R script/project/command that you want to run in that environment
-- You **do not need to install R itself** (R 4.3.0 is provided by the container)
+- **No need to install R itself** (R 4.3.0 is provided by the container)
 
 
 ## Motivation and big picture
@@ -26,7 +26,12 @@ This container:
 - does not allow accidental "I will just quickly install it into my system and document it later" since it is a container
 
 
-## Quick start
+## Quick start on your computer
+
+...
+
+
+## Quick start on a cluster
 
 ...
 
@@ -130,10 +135,9 @@ Relevant GitHub issues:
 - https://github.com/rstudio/renv/issues/907
 - https://github.com/r-lib/pak/issues/343
 
-You have the option to disable [pak](https://pak.r-lib.org/) 
-by setting the environment variable (...):
+You have the option to turn off [pak](https://pak.r-lib.org/) like this:
 ```bash
-# ...
+export USE_PAK=false
 ```
 
 Pros and cons:
@@ -162,11 +166,6 @@ whether you already have the package on your computer.
 **On a shared cluster** it might make sense to have one common cache for your
 group/allocation since your research group might use similar dependencies in
 their work.  This way you can save space and install time.
-
-
-## How to run this on a cluster
-
-...
 
 
 ## Known problems/ ideas for later

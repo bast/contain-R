@@ -72,13 +72,17 @@ From: rstudio/r-base:focal
     # can be configured by setting RENV_CACHE
     export RENV_PATHS_ROOT=${RENV_CACHE:-"renv-cache"}
 
-    export RENV_CONFIG_PAK_ENABLED="TRUE"
-    # can be configured by setting PAK_CACHE
-    export PKG_PACKAGE_CACHE_DIR=${PAK_CACHE:-"pak-cache"}
+    if [ "$USE_PAK" = false ]; then
+        echo "INFO: not using pak"
+    else
+        export RENV_CONFIG_PAK_ENABLED="TRUE"
+        # can be configured by setting PAK_CACHE
+        export PKG_PACKAGE_CACHE_DIR=${PAK_CACHE:-"pak-cache"}
 
-    # not sure whether we should do anything with these two
-#   export PKG_CACHE_DIR="pkg-cache-dir"
-#   export PKG_METADATA_CACHE_DIR="pkg-metadata-cache-dir"
+        # not sure whether we should do anything with these two
+#       export PKG_CACHE_DIR="pkg-cache-dir"
+#       export PKG_METADATA_CACHE_DIR="pkg-metadata-cache-dir"
+    fi
 
     if [ ! -e renv/activate.R ]; then
         R --quiet -e 'renv::init()'
