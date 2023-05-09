@@ -26,6 +26,8 @@ This container:
 - does not allow accidental "I will just quickly install it into my system and document it later" since it is a container
 - forces you to document your dependencies which is good for reproducibility and your future self
 
+Dependencies are not installed into the container but only managed by the container.
+
 
 ## Quick start on your computer
 
