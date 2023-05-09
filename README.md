@@ -31,7 +31,7 @@ This container:
 ...
 
 
-## `install.R` or `renv.lock` or both?
+## install.R or renv.lock or both?
 
 You need something to define the environment you want, either `install.R` or `renv.lock`.
 
@@ -111,13 +111,24 @@ want them somewhere else):
 
 ## Installation takes too long?
 
-...
+Running a script for the first time may take time since it needs to set up the
+environment and download and install dependencies.
+
+However, re-running the script will take no installation time and if
+dependencies are already in the cache, it will take no time either.
 
 
 ## Pak and renv use different caches and methods
 
 For historical reasons they are slightly different but their
 developers are working on smoothing things out between the two.
+You will notice the difference if you start from `install.R`,
+and then try to restore back from the generated `renv.lock`: you will
+notice that the two will use different methods.
+
+Relevant GitHub issues:
+- https://github.com/rstudio/renv/issues/907
+- https://github.com/r-lib/pak/issues/343
 
 You have the option to disable [pak](https://pak.r-lib.org/) 
 by setting the environment variable (...):
@@ -137,17 +148,20 @@ Pros and cons:
 
 You can change the location of the package caches:
 ```bash
-# you decide where these should be
 export RENV_CACHE=/home/user/R/renv-cache
 export PAK_CACHE=/home/user/R/pak-cache
-
-# rest of your script
 ```
 
 
 ## Recommendations on where to place package caches
 
-...
+**On your own computer** it will make sense to reuse the same cache(s) across
+all projects.  This way, when installing dependencies, renv will first look
+whether you already have the package on your computer.
+
+**On a shared cluster** it might make sense to have one common cache for your
+group/allocation since your research group might use similar dependencies in
+their work.  This way you can save space and install time.
 
 
 ## How to run this on a cluster
@@ -159,7 +173,7 @@ export PAK_CACHE=/home/user/R/pak-cache
 
 - Maybe you need a different version of R than 4.3.0. I guess we should at some
   point have several containers for different versions?
-- It could be useful to let the user configure where `renv` itself should be
+- It could be good to let the user configure where `renv` itself should be
   located. Currently it is placed in the same folder where the container is run.
 
 
@@ -167,8 +181,9 @@ export PAK_CACHE=/home/user/R/pak-cache
 
 I have used these resources when writing/testing:
 - https://rstudio.github.io/renv/
+- https://rstudio.github.io/renv/articles/docker.html
 - https://pak.r-lib.org/
 - https://rstudio.github.io/packrat/ (deprecated)
 - https://sites.google.com/nyu.edu/nyu-hpc/hpc-systems/greene/software/r-packages-with-renv
 - https://raps-with-r.dev/repro_intro.html
-- https://www.youtube.com/watch?v=N7z1K4FhVFE
+- https://www.youtube.com/watch?v=N7z1K4FhVFE (stream recording on how to use renv)
