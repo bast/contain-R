@@ -85,13 +85,11 @@ From: rstudio/r-base:focal
     fi
 
     if "$use_install_R_file"; then
-        echo "DEBUG installing from install.R"
         Rscript install.R
         R --quiet -e 'renv::snapshot(type = "all")'
         touch renv/last-updated
     else
         if "$use_lock_file"; then
-            echo "DEBUG installing from renv.lock"
             R --quiet -e 'renv::restore()'
             touch renv/last-updated
         fi
