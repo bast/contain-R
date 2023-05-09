@@ -1,6 +1,6 @@
 # contain-R
 
-Singularity/apptainer container for reproducible R environments.
+Apptainer/Singularity container for reproducible R environments.
 
 
 ## What you need for this to work
@@ -9,6 +9,11 @@ Singularity/apptainer container for reproducible R environments.
 - `install.R` or `renv.lock` file (examples below) that define the environment
 - An R script/project/command that you want to run in that environment
 - You **do not need to install R itself** (R 4.3.0 is provided by the container)
+
+
+## Motivation and big picture
+
+...
 
 
 ## Quick start
@@ -27,6 +32,11 @@ Singularity/apptainer container for reproducible R environments.
 
 
 ## How to run this on a cluster
+
+...
+
+
+## Pak and renv use different caches and methods
 
 ...
 
