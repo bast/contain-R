@@ -1,0 +1,4 @@
+*.sif
+pak-cache/
+renv-cache/
+renv/
