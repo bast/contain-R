@@ -28,12 +28,32 @@ This container:
 
 ## Quick start on your computer
 
-...
+1. Create a new directory.
+2. In the new directory create a file `install.R` which contains:
+```r
+renv::install('ggplot2')
+```
+3. Download the container:
+```
+# ...
+```
+4. Run the following in your terminal (this will take 1-2 minutes):
+```
+$ ./container.sif R --quiet -e 'library(ggplot2)'
+```
+5. Run the above again (now it will only take a second).
+6. Run some R script which depends on that environment:
+```
+$ ./container.sif Rscript somescript.R
+```
 
 
 ## Quick start on a cluster
 
-...
+Same as above but instead of step 4) use (adapt paths to your situation):
+```
+# ...
+```
 
 
 ## install.R or renv.lock or both?
@@ -140,12 +160,12 @@ You have the option to turn off [pak](https://pak.r-lib.org/) like this:
 export USE_PAK=false
 ```
 
-Pros and cons:
+Pros and cons of turning it off:
 - Advantage: Only one cache location and everything is nicely consistent. You
   could install from `install.R`, then remove it even and run from `renv.lock`
   and it would be all consistent and not need to re-install anything.
 - Disadvantage: First installation from `install.R` might take longer when
-  disabling [pak](https://pak.r-lib.org/).
+  without [pak](https://pak.r-lib.org/).
 
 
 ## How to configure location for package caches
@@ -171,7 +191,8 @@ their work.  This way you can save space and install time.
 ## Known problems/ ideas for later
 
 - Maybe you need a different version of R than 4.3.0. I guess we should at some
-  point have several containers for different versions?
+  point have several containers for different versions? Or you build your own
+  from the definition file.
 - It could be good to let the user configure where `renv` itself should be
   located. Currently it is placed in the same folder where the container is run.
 
